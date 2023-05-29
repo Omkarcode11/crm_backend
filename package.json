@@ -4,23 +4,24 @@
   "description": "CRM Backend",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --testEnvironment=node --runInBand --detectOpenHandles --coverage ./test",
     "devStart": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeev1992/crm_backend.git"
   },
-  "author": "Jeevendra Singh",
+  "author": "omkar Singh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jeev1992/crm_backend/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/jeev1992/crm_backend#readme",
+  "homepage": "",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
+    "jest": "^29.5.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.2",
     "node-rest-client": "^3.1.1",

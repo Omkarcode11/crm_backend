@@ -23,4 +23,9 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     ticketController.getOneTicket
   );
+  app.put(
+    "/crm/api/v1/tickets/assignee/engineer",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    ticketController.assigneeEngineer
+  );
 };

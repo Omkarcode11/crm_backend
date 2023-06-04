@@ -24,23 +24,23 @@ exports.createTicket = async (req, res) => {
     const ticket = await Ticket.create(ticketObject);
 
     if (ticket) {
-      const user = await User.findOne({ userId: req.userId });
+      const user = await User.findOne({ userId: req.userId }); await user.save();
 
       user.ticketsCreated.push(ticket._id);
-      await user.save();
+
       if (engineer) {
         engineer.ticketsAssigned.push(ticket._id);
         await engineer.save();
       }
     }
 
-    
+
 
     return res
       .status(200)
       .send({ message: "Ticket Created Successfully", data: ticket });
   } catch (err) {
-    return res.status(500).json({ message: "internal Error ", err });
+    return res.status(500).json({ message: "internal Error", err });
   }
 };
 
@@ -49,8 +49,8 @@ exports.updateTicket = async (req, res) => {
     const ticket = await Ticket.findById(req.params.id);
 
     if (
-      (ticket && ticket.reporter == req.userId) ||
-      ticket.assignee == req.userId
+      (ticket && (ticket.reporter == req.userId) ||
+        ticket.assignee == req.userId)
     ) {
       (ticket.title =
         req.body.title != undefined ? req.body.title : ticket.title),
@@ -89,13 +89,13 @@ exports.updateTicket = async (req, res) => {
       return res.status(200).send(updatedTicket);
     } else {
       return res.status(401).send({
-        message: "Ticket can only be updated by the customer who created it ",
+        message: "Ticket can only be updated by the customer who created it",
       });
     }
   } catch (err) {
     return res.status(500).json({
-      message: "internal Error",
-      err,
+      message: "internal Error"
+
     });
   }
 };
@@ -136,7 +136,7 @@ exports.getOneTicket = async (req, res) => {
       return res.status(200).send("ticket not found");
     }
   } catch (err) {
-    return res.status(500).send("internal err ");
+    return res.status(500).send("internal err");
   }
 };
 
@@ -170,6 +170,6 @@ exports.assigneeEngineer = async (req, res) => {
       return res.status(200).send("engineer is not Approved");
     else return res.status(200).send("engineer Id is Incorrect");
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send('internal Error');
   }
 };

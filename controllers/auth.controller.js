@@ -7,13 +7,13 @@ const authConfig = require("../configs/auth.config")
 exports.signup = async (req, res) => {
     var userStatus = req.body.userStatus
     var userType = req.body.userType
-    if(userType == constants.userTypes.customer){
+    if (userType == constants.userTypes.customer) {
         userStatus = constants.userStatus.approved
-    }else{
+    } else {
         userStatus = constants.userStatus.pending
     }
 
-    try{
+    try {
         const createUser = await User.create({
             name: req.body.name,
             userId: req.body.userId,
@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
         }
 
         res.status(200).send(postResponse)
-    }catch(e){
+    } catch (e) {
         console.log("Error occurred while creating the user")
         res.status(500).send({
             message: "Some internal error occured while creating the user"
@@ -43,15 +43,15 @@ exports.signup = async (req, res) => {
 }
 
 exports.signin = async (req, res) => {
-    const user = await User.findOne({userId: req.body.userId})
-    if(!user){
+    const user = await User.findOne({ userId: req.body.userId })
+    if (!user) {
         res.status(400).send({
             message: "Failed! UserId doesn't exist"
         })
         return;
     }
 
-    if(user.userStatus != constants.userStatus.approved){
+    if (user.userStatus != constants.userStatus.approved) {
         res.status(403).send({
             message: "Can't allow user to login as the status is " + user.userStatus
         })
@@ -61,13 +61,13 @@ exports.signin = async (req, res) => {
     //Check if password matches
     var isPasswordValid = bcrypt.compareSync(req.body.password, user.password)
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
         return res.status(401).send({
             message: "Password provided is invalid"
         })
     }
 
-    var token = jwt.sign({id: user.userId}, authConfig.secretKey, {
+    var token = jwt.sign({ id: user.userId }, authConfig.secretKey, {
         expiresIn: 86400
     })
 

@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
-const { userResponse } = require("../utils/converUserObject");
+const { userStatus } = require("../utils/constants");
+
 
 exports.findAll = async (req, res) => {
   try {
@@ -24,12 +25,13 @@ exports.findById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    // name email userStatus usertype
     let id = req.params.userId;
     let updatedValue = req.body;
     let user = await User.findOneAndUpdate(
       { userId: id },
       {
-        updatedValue
+        ...updatedValue
       }
     );
 

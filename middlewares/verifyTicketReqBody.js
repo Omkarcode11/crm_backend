@@ -10,7 +10,7 @@ validateTicketRequestBody = (req, res, next) => {
 
   // validate description of tickets
   if (!req.body.description) {
-    return req.status(400).send({
+    return res.status(400).send({
       msg: "Failed ! description is not provided",
     });
   }
@@ -30,7 +30,7 @@ validateTicketStatus = (req, res, next) => {
 
   if (status && !statusTypes.includes(status)) {
     return res.status(400).send({
-      message: "Failed ! Status provided is invalid ",
+      message: "Failed ! Status provided is invalid",
     });
   }
 
@@ -41,3 +41,6 @@ const verifyTicketReqBody = {
   validateTicketRequestBody: validateTicketRequestBody,
   validateTicketStatus: validateTicketStatus,
 };
+
+
+module.exports = verifyTicketReqBody

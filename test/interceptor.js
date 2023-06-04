@@ -12,4 +12,8 @@ module.exports = {
     res.json = jest.fn().mockReturnValue(res);
     return res
   },
+  mockNext : ()=>{
+    const next = jest.fn().mockReturnValue('done')
+    return next
+  }
 };

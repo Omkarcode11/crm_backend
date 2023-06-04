@@ -4,23 +4,23 @@ const config = require("../configs/auth.config");
 const User = require("../models/user.model");
 const constants = require("../utils/constants");
 
-verifyToken = (req, res, next) => {
+verifyToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
     return res.status(401).send({ msg: "Not Auth Not token Provided" });
   }
-  jwt.verify(token, config.secretKey, (err, decoded) => {
-    if (err) {
-      return res
-        .status(401)
-        .send({ msg: "Request cannot be authenticated . Token is invalid" });
-    }
+  let isValidJwt = await jwt.verify(token, config.secretKey)
 
-    req.userId = decoded.id;
+  if (isValidJwt) {
+    req.userId = isValidJwt.id
+    next()
+  } else {
+    return res
+      .status(401)
+      .send({ msg: "Request cannot be authenticated . Token is invalid" });
+  }
 
-    next();
-  });
 };
 
 isAdmin = async (req, res, next) => {
@@ -40,7 +40,7 @@ validateUpdating = async (req, res, next) => {
   let valid = { name: true, email: true, userType: true, userStatus: true };
   for (const key in update) {
     if (!valid[key]) {
-      return res.status(402).send("Your not able to update field");
+      return res.status(402).send(`you cannot update ${key}`);
     }
   }
   next();
@@ -49,6 +49,7 @@ validateUpdating = async (req, res, next) => {
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
+  validateUpdating: validateUpdating
 };
 
 module.exports = authJwt;

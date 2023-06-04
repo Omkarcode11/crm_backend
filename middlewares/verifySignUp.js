@@ -5,46 +5,49 @@ validateSignUpRequest = async (req, res, next) => {
     //Implement logic for validating the request
 
     //1.validate the name
-    if(!req.body.name){
-        res.status(400).send({
+    if (!req.body.name) {
+        return res.status(400).send({
             message: "Failed! Name is not provided"
         })
-        return;
+
     }
 
     //2. validate the userId
-    if(!req.body.userId){
-        res.status(400).send({
+    if (!req.body.userId) {
+        return res.status(400).send({
             message: "Failed! UserId is not provided"
         })
-        return;
+
     }
 
     //3. validate if the userId already exists
-    const user = await User.findOne({name: req.body.name});
-    if(user != null){
-        res.status(400).send({
+    const user = await User.findOne({ name: req.body.name });
+    if (user != null) {
+        return res.status(400).send({
             message: "Failed! UserId already exists"
         })
-        return;
+
     }
 
     //4. validate email
-    //Need to be implemented
+    if (req.body.email && !req.body.email.length >= 5 ||!req.body.email.includes('@') || !req.body.email.includes('.')){
+        return res.status(400).send({message:'Enter Valid Email'})
+    }
+        //Need to be implemented
 
-    //5. validate if the emailId already exists
-    const email = await User.findOne({email: req.body.email});
-    if(email != null){
-        res.status(400).send({
+        //5. validate if the emailId already exists
+        const email = await User.findOne({ email: req.body.email });
+    if (email != null) {
+        return res.status(400).send({
             message: "Failed! Email already exists"
         })
-        return;
+
     }
 
     //6. Validate the userType
     const userType = req.body.userType;
     const validUserTypes = [constants.userTypes.customer, constants.userTypes.admin, constants.userTypes.engineer]
-    if(userType && !validUserTypes.includes(userType)){
+    if (userType && !validUserTypes.includes(userType)) {
         res.status(400).send({
             message: "UserType provided is invalid"
         })

@@ -7,13 +7,16 @@ const dbConfig = require("./configs/db.config");
 const serverConfig = require("./configs/server.config");
 const User = require("./models/user.model");
 const bcrypt = require("bcryptjs");
+const cors = require('cors')
 require('dotenv').config()
 
 //Express settings
 const express = require("express");
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 //Establish DB connection
 mongoose.connect(dbConfig.DB_URL);

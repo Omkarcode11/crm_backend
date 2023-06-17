@@ -38,8 +38,9 @@ exports.signup = async (req, res) => {
 
         res.status(200).send(postResponse)
     }catch(e){
-        console.log("Error occurred while creating the user")
+        console.log("Error occurred while creating the user",e)
         res.status(500).send({
+            error : e,
             message: "Some internal error occured while creating the user"
         })
     }

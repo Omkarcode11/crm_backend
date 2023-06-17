@@ -5,8 +5,9 @@ const jwt = require("jsonwebtoken")
 const authConfig = require("../configs/auth.config")
 
 exports.signup = async (req, res) => {
+    let userStatus=''
     if(req.body.userType==constants.userTypes.engineer){   
-    var userStatus = req.body.userStatus
+     userStatus = req.body.userStatus
     }
     var userType = req.body.userType
     if(userType == constants.userTypes.customer){

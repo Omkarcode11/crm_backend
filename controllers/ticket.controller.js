@@ -3,25 +3,25 @@ const Ticket = require("../models/ticket.model");
 const constants = require("../utils/constants");
 
 exports.createTicket = async (req, res) => {
-  
-    const ticketObject = {
-      
+
+  const ticketObject = {
+
     title: req.body.title,
     ticketPriority: req.body.ticketPriority,
     description: req.body.description,
-    status: req.body.status,
+    status: constants.ticketStatus.open,
     reporter: req.userId,
   };
 
   try {
-  // assign an engineer to the ticket which is ni approved state
+    // assign an engineer to the ticket which is ni approved state
 
-  const engineer = await User.findOne({
-    userType: constants.userTypes.engineer,
-    userStatus: constants.userStatus.approved,
-  });
+    const engineer = await User.findOne({
+      userType: constants.userTypes.engineer,
+      userStatus: constants.userStatus.approved,
+    });
 
-  ticketObject.assignee = engineer.userId;
+    ticketObject.assignee = engineer.userId;
 
     const ticket = await Ticket.create(ticketObject);
 
@@ -39,8 +39,8 @@ exports.createTicket = async (req, res) => {
 
 
     return res
-    .status(200)
-    .send({ message: "Ticket Created Successfully", data: ticket });
+      .status(200)
+      .send({ message: "Ticket Created Successfully", data: ticket });
   } catch (err) {
     return res.status(500).json({ message: "internal Error", err });
   }

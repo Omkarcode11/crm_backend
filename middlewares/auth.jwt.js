@@ -5,11 +5,15 @@ const User = require("../models/user.model");
 const constants = require("../utils/constants");
 
 verifyToken = async (req, res, next) => {
-  let token = req.headers["x-access-token"];
 
-  if (!token) {
+  try{
+    
+    let token = req.headers["x-access-token"];
+    
+    if (!token) {
     return res.status(401).send({ msg: "Not Auth Not token Provided" });
   }
+
   let isValidJwt = await jwt.verify(token, config.secretKey)
 
   if (isValidJwt) {
@@ -20,6 +24,9 @@ verifyToken = async (req, res, next) => {
       .status(401)
       .send({ msg: "Request cannot be authenticated . Token is invalid" });
   }
+}catch(err){
+return res.status(500).send(err)
+}
 
 };
 

@@ -26,9 +26,9 @@ exports.createTicket = async (req, res) => {
     const ticket = await Ticket.create(ticketObject);
 
     if (ticket) {
-      const user = await User.findOne({ userId: req.userId }); await user.save();
-
+      const user = await User.findOne({ userId: req.userId });
       user.ticketsCreated.push(ticket._id);
+      await user.save();
 
       if (engineer) {
         engineer.ticketsAssigned.push(ticket._id);

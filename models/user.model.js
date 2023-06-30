@@ -1,24 +1,28 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true
     },
-    userId:{
+    userId: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    email:{
+    email: {
         type: String,
         required: true,
         lowercase: true,
         unique: true
+    },
+    comment: {
+        type: String,
+        default: 'We are working on It'
     },
     userType: {
         type: String,
@@ -30,23 +34,23 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: "PENDING"
     },
-    ticketsCreated:{
-        type : [mongoose.SchemaTypes.ObjectId],
-        ref : 'Ticket'
+    ticketsCreated: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: 'Ticket'
 
     },
-    ticketsAssigned:{
-        type : [mongoose.SchemaTypes.ObjectId],
-        ref : 'Ticket'
+    ticketsAssigned: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: 'Ticket'
     },
     createdAt: {
         type: Date,
         immutable: true,
-        default: () => {return Date.now();}
+        default: () => { return Date.now(); }
     },
     updatedAt: {
         type: Date,
-        default: () => {return Date.now();}
+        default: () => { return Date.now(); }
     }
 })
 

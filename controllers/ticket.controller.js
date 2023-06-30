@@ -65,6 +65,8 @@ exports.updateTicket = async (req, res) => {
           : ticket.ticketPriority,
         (ticket.status =
           req.body.status != undefined ? req.body.status : ticket.status);
+      (ticket.comment =
+        req.body.comment != undefined ? req.body.comment : ticket.comment);
 
       var updatedTicket = await ticket.save();
 

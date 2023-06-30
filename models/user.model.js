@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         unique: true
     },
-    comment: {
-        type: String,
-        default: 'We are working on It'
-    },
     userType: {
         type: String,
         required: true,

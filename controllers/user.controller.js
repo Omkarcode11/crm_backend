@@ -4,7 +4,8 @@ const { userStatus } = require("../utils/constants");
 
 exports.findAll = async (req, res) => {
   try {
-    let users = await User.find({});
+    let query = req.query
+    let users = await User.find(query);
     if (users) {
       return res.status(200).send(users);
     }
@@ -29,13 +30,9 @@ exports.updateUser = async (req, res) => {
     let id = req.params.userId;
     let updatedValue = req.body;
     let user = await User.findOneAndUpdate(
-      { userId: id },
-      {
-        ...updatedValue
-      }
-    );
+      { userId: id },updatedValue);
 
-    if (user.length) {
+    if (user) {
       return res.status(200).send("user updated successfully");
     } else {
       return res.status(200).send("user not Found");

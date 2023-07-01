@@ -10,7 +10,7 @@ module.exports = function (app) {
   );
   app.get(
     "/crm/api/v1/user/:userId",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken],
     userController.findById
   );
   app.put(

@@ -8,6 +8,7 @@ exports.signup = async (req, res) => {
 
     let userStatus;
     let userType = req.body.userType
+    if (userType == "") userType = constants.userTypes.customer
     if (userType == constants.userTypes.customer) {
         userStatus = constants.userStatus.approved
     } else {

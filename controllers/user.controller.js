@@ -7,7 +7,22 @@ exports.findAll = async (req, res) => {
     let query = req.query
     let users = await User.find(query);
     if (users) {
-      return res.status(200).send(users);
+
+      let sendArr = []
+
+      for (let i = 0; i < users.length; i++) {
+        let obj = {}
+        obj._id = users[i]._id,
+          obj.name = users[i].name,
+          obj.userId = users[i].userId,
+          obj.email = users[i].email,
+          obj.userStatus = users[i].userStatus,
+          obj.ticketsCreated = users[i].ticketsCreated.length,
+          obj.ticketsAssigned = users[i].ticketsAssigned.length
+
+        sendArr.push(obj)
+      }
+      return res.status(200).send(sendArr);
     }
   } catch (err) {
     return res.status(500).send("Internal Error");
@@ -30,7 +45,7 @@ exports.updateUser = async (req, res) => {
     let id = req.params.userId;
     let updatedValue = req.body;
     let user = await User.findOneAndUpdate(
-      { userId: id },updatedValue);
+      { userId: id }, updatedValue);
 
     if (user) {
       return res.status(200).send("user updated successfully");

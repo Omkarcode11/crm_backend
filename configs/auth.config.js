@@ -1,3 +1,3 @@
 module.exports = {
-    secretKey: process.env.SECRET_KEY|| "crm-backend-secret-key"
+    secretKey: process.env.SECRET_KEY || "as;lfkjsargo-sa;lfkjergpihlkdjfsa-sdghjeroijdfl;kf"
 }

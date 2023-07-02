@@ -41,7 +41,7 @@ exports.findById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    // name email userStatus usertype
+
     let id = req.params.userId;
     let updatedValue = req.body;
     let user = await User.findOneAndUpdate(

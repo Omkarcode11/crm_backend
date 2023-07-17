@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Ticket = require("../models/ticket.model");
 const constants = require("../utils/constants");
+const { changeAssignee } = require("../utils/changeAssigne");
 
 exports.createTicket = async (req, res) => {
 
@@ -88,6 +89,18 @@ exports.updateTicket = async (req, res) => {
         (ticket.status =
           req.body.status != undefined ? req.body.status : ticket.status);
 
+
+
+      if (req.body.newAssignee) {
+        let oldAssigneeId = req.body.newAssignee.oldAssigneeId
+        let newAssigneeId = req.body.newAssignee.newAssigneeId
+        let data = await changeAssignee(oldAssigneeId, req.params.id, newAssigneeId)
+
+        if (data == true) {
+          ticket.assignee = newAssigneeId
+        }
+
+      }
       var updatedTicket = await ticket.save();
 
       return res.status(200).send(updatedTicket);
@@ -177,3 +190,4 @@ exports.assigneeEngineer = async (req, res) => {
     res.status(500).send('internal Error');
   }
 };
+

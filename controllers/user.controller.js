@@ -7,9 +7,7 @@ exports.findAll = async (req, res) => {
     let query = req.query
     let users = await User.find(query);
     if (users) {
-
       let sendArr = []
-
       for (let i = 0; i < users.length; i++) {
         let obj = {}
         obj._id = users[i]._id,
@@ -19,7 +17,6 @@ exports.findAll = async (req, res) => {
           obj.userStatus = users[i].userStatus,
           obj.ticketsCreated = users[i].ticketsCreated.length,
           obj.ticketsAssigned = users[i].ticketsAssigned.length
-
         sendArr.push(obj)
       }
       return res.status(200).send(sendArr);

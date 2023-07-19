@@ -52,7 +52,7 @@ exports.updateTicket = async (req, res) => {
     const ticket = await Ticket.findById(req.params.id);
 
     if (
-      (ticket && (ticket.reporter == req.userId) ||
+      (ticket && ticket.assignee && (ticket.reporter == req.userId) ||
         ticket.assignee == req.userId)
     ) {
       (ticket.title =
@@ -77,27 +77,22 @@ exports.updateTicket = async (req, res) => {
     let userInfo = await User.findOne({ userId: req.userId });
 
     if (userInfo.userType == constants.userTypes.admin) {
-      (ticket.title =
-        req.body.title != undefined ? req.body.title : ticket.title),
-        (ticket.description =
-          req.body.description != undefined
-            ? req.body.description
-            : ticket.description),
-        ticket.ticketPriority != undefined
-          ? req.body.ticketPriority
-          : ticket.ticketPriority,
-        (ticket.status =
-          req.body.status != undefined ? req.body.status : ticket.status);
+
+      (ticket.title = req.body.title != undefined && req.body.title != '' ? req.body.title : ticket.title),
+        (ticket.description = req.body.description != undefined && req.body.description != '' ? req.body.description : ticket.description),
+
+
+        (ticket.ticketPriority = req.body.ticketPriority != undefined && req.body.ticketPriority != '' ? req.body.ticketPriority : ticket.ticketPriority),
+
+        (ticket.status = req.body.status != undefined && req.body.status.length != 0 ? req.body.status : ticket.status);
 
 
 
-      if (req.body.newAssignee) {
-        let oldAssigneeId = req.body.newAssignee.oldAssigneeId
-        let newAssigneeId = req.body.newAssignee.newAssigneeId
-        let data = await changeAssignee(oldAssigneeId, req.params.id, newAssigneeId)
+      if (req.body.newAssignee && req.body.newAssignee.newAssignee!="") {
+        let data = await changeAssignee(req.body.newAssignee.oldAssignee, req.params.id, req.body.newAssignee.newAssignee)
 
         if (data == true) {
-          ticket.assignee = newAssigneeId
+          ticket.assignee = req.body.newAssignee.newAssignee
         }
 
       }
